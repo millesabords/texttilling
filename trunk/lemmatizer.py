@@ -70,18 +70,8 @@ class Tokenizer:
             tok.append([])
             
             bloks = self.tokenizing(corpus[i], self.k)
-            print bloks
             
             for b in bloks:
                 tok[i].append(self.stemming(b))
             
         return tok
-    
-def main():
-    tokenizer = Tokenizer(['heracles.txt'], 3)
-    
-    tokens = tokenizer.preprocess()
-    
-    print tokens
-
-main()
