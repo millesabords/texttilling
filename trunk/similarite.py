@@ -50,9 +50,3 @@ class similarite:
         den = N.sqrt(N.dot(b1, b1) * N.dot(b2, b2))
         return (num / den)
 
-######################## MAIN DE TEST #########################
-
-test = [["journee", "demain", "etre", "belle"], ["demain", "belle", "tres", "etre", "moi", "peur", "belle", "hier"], ["jean", "pas", "tout", "tres", "etre", "jean"]]
-t = similarite(test)
-t.tfidf()
-print t.cos(["journee", "demain", "etre", "belle"], ["journee", "demain", "etre", "belle"])
