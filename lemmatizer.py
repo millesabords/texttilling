@@ -17,7 +17,8 @@ class Tokenizer:
         stems = []
         
         for token in tokens:
-            stemmed_token = stemmer.stem(token)
+            
+            stemmed_token = stemmer.stem(str.lower(token))
             if self.filter(stemmed_token) == True:
                 stems.append(stemmed_token)
             
