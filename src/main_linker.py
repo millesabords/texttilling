@@ -1,8 +1,11 @@
 from lemmatizer import *
 from similarite import *
 from borders import *
+from linker import *
 
-tokenizer = Tokenizer(['../test'], 3)#bible.txt'], 3)
+input_files = ['../test']
+
+tokenizer = Tokenizer(input_files, 3)#bible.txt'], 3)
 tokens = tokenizer.preprocess()
 
 print "lemmatizer finished"
@@ -14,5 +17,8 @@ sim.tfidf()
 print 
 print "similarity calculs finished"
 
-B = borders(tokens, sim)
-B.test()
+#B = borders(tokens, sim)
+#B.test()
+
+L = linker(input_files, tokens, sim, 0.75)
+L.process()
