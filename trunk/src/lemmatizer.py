@@ -71,7 +71,7 @@ class Tokenizer:
             tok.append([])
             
             bloks = self.tokenizing(corpus[i], self.k)
-            
+
             for b in bloks:
                 tok[i].append(self.stemming(b))
             
