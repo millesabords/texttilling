@@ -7,11 +7,12 @@ class linker:
     auquel on concatene "res".
     """
 
-    def __init__(self, input_files, tokens, sim, seuil):
+    def __init__(self, input_files, paragraphs, tokens, sim, seuil):
         self.sim = sim
         self.tokens = tokens
         self.seuil = seuil
         self.input_files = input_files
+        self.paragraphs = paragraphs
 
     def create_links(self):
         """
@@ -34,12 +35,23 @@ class linker:
                     if j != k:
                         coeff = self.sim.cos(i, self.tokens[i][j], self.tokens[i][k])
                         if coeff > self.seuil:
-                            #print coeff#debug to adjust seuil
                             tab2.append(k)
                 tab1.append(tab2)
             lnks.append(tab1)
         return lnks
 
+    def rewrite(self, paragraph, output):
+        """
+        se charge de reecrire les paragraphes tels que decoupes dans le tokenizer.
+        probleme: cette transformation a saborde quelques mots, raison pour laquelle
+        le fichier resultat n'est pas extremement beau.
+        """
+        s = "  "
+        for i in xrange(len(paragraph)):
+            s += paragraph[i]
+            if paragraph[i] != '.' and paragraph[i] != ',':
+                s += ' '
+        output.write(s)
 
     def process(self):
         """
@@ -54,12 +66,16 @@ class linker:
             output = open(self.input_files[i] + "res", 'w')
             #ici jaurai besoin des paragraphes coupes mais non transformes (re-ecrivables)
             #pour creer le beau fichier tel qu'on en parlait dans les specs
-            for j in xrange(len(lnks[i])):
+            # ---> seule solution trouvee: utilisation de "paragraphs" fait
+            #a partir des "blocks" dans tokenizer.preprocess()
+
+            for j in xrange(len(self.paragraphs[i])):
+                self.rewrite(self.paragraphs[i][j], output)
                 if len(lnks[i][j]) > len(lnks[i]) / 2:
-                    s = "paragraph " + str(j) + " is linked with almost everything\n"
+                    s = "  --> paragraph [" + str(j) + "] is linked with almost everything\n"
                 else:
-                    s = "paragraph " + str(j) + " is linked with:\t" + str(lnks[i][j]) + '\n'
+                    s = "  --> paragraph [" + str(j) + "] is linked with:\t" + str(lnks[i][j]) + '\n'
                 if len(lnks[i][j]) == 0:
-                    s = "paragraph " + str(j) + " has no links\n"
-                output.write(s)
+                    s = "  --> paragraph [" + str(j) + "] has no links\n"
+                output.write('\n' + s)
         print "link stage finished"
