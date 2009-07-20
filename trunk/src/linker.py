@@ -7,7 +7,8 @@ class linker:
     auquel on concatene "res".
     """
 
-    def __init__(self, input_files, paragraphs, tokens, sim, seuil):
+    def __init__(self, dirname, input_files, paragraphs, tokens, sim, seuil):
+        self.dir = dirname
         self.sim = sim
         self.tokens = tokens
         self.seuil = seuil
@@ -63,7 +64,7 @@ class linker:
         lnks = self.create_links()
 
         for i in xrange(len(self.input_files)):
-            output = open(self.input_files[i] + "res", 'w')
+            output = open(self.dir + self.input_files[i] + "_res", 'w')
             #ici jaurai besoin des paragraphes coupes mais non transformes (re-ecrivables)
             #pour creer le beau fichier tel qu'on en parlait dans les specs
             # ---> seule solution trouvee: utilisation de "paragraphs" fait

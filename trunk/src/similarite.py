@@ -19,7 +19,6 @@ class similarity:
             poids = []
             idf = []
             nbBlocs = float(len(doc))
-            print "nb blocs = " + str(nbBlocs)
 
             # Lists containing the number of appearance of a term, which has already been evaluated
             AAstr = []
@@ -40,7 +39,6 @@ class similarity:
                         AAnb.append(appear)
                     b[i] = N.log(nbBlocs / appear)
                 idf.append(b.copy())
-
             # Calcul des poids tf-idf
             for j in xrange(len(doc)):
                 b = N.zeros((len(doc[j])))
@@ -48,7 +46,6 @@ class similarity:
                     b[i] = float(doc[j].count(doc[j][i])) / len(doc[j])
                 b *= idf[j]
                 poids.append(b.copy())
-#                print j
             self.poids.append(poids)
 
     def cos(self, j, bloc1, bloc2):
