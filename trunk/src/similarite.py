@@ -48,7 +48,7 @@ class similarity:
                     b[i] = float(doc[j].count(doc[j][i])) / len(doc[j])
                 b *= idf[j]
                 poids.append(b.copy())
-                print j
+#                print j
             self.poids.append(poids)
 
     def cos(self, j, bloc1, bloc2):
