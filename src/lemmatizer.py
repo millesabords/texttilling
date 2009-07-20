@@ -1,10 +1,11 @@
 from nltk import *
+from os.path import *
 
-l_discriminates = (',','?','[',']','(',')',';','.',':','/','!','a','the',
-                   'an','of','this','is','in','but','to','from',
-                   'this','a',',','that','and','have','-','who','The',
-                   ' ','are','s','.','has','will','is','it','in','the',
-                   'which','for','be','by','on','of','with','an','as',
+l_discriminates = (',','?','[',']','(',')',';','.',':','/','!','a',
+                   'an','of','this','in','but','to','from',
+                   'this','a',',','that','and','have','-','who',
+                   ' ','are','s','.','has','will','is','it','the',
+                   'which','for','be','by','on','with','an','as',
                    'them','they','or','their','than','thi','would',
                    'then','so','hi','if','at','%')
 
@@ -38,8 +39,8 @@ class Tokenizer:
                     occurences[stemmed_token] = 1
                 else:
                     occurences[stemmed_token] += 1
-            else:
-                print stemmed_token
+#            else:
+#                print stemmed_token
 
         return stems
         
@@ -68,7 +69,7 @@ class Tokenizer:
         
     def getCorpus(self):
         """
-        Renvoie tout le contenu du fichier.
+        Renvoie tout le contenu du (des) fichier(s).
         """
         res = []
     #    for w in nltk.corpus.gutenberg.words('austen-emma.txt'):
@@ -79,11 +80,19 @@ class Tokenizer:
             
         for file in range(0, len(self.files)):
             res.append('')
-            input = open(self.files[file], 'r')
-            lines = input.readlines()[0:]
-            for l in lines:
-                res[file] += l
-        
+            if (os.path.isdir(self.files[file])):
+                for root, dirs, files in os.walk(self.files[file]): 
+                    for i in files: 
+                        input = open(os.path.join(root, i), 'r')
+                        lines = input.readlines()[0:]
+                        for l in lines:
+                            res[file] += l
+                        print files
+            else:
+                input = open(self.files[file], 'r')
+                lines = input.readlines()[0:]
+                for l in lines:
+                    res[file] += l
         return res
 
 
@@ -91,6 +100,7 @@ class Tokenizer:
         """
         affichage des occurences du texte en cours.
         """
+        print "\nTable des occurences: "
         cpt = 0
         sss = ""
         loc = occurences.items()
@@ -112,13 +122,13 @@ class Tokenizer:
         
     def preprocess(self):
         """
-        lance le tokenizing puis le stemming sur tous le corpus.
+        lance le tokenizing puis le stemming sur tout le corpus.
         """
         tok = []
-        
+
         corpus = self.getCorpus()
         paragraphs = []
-        for i in range(0, len(corpus)):
+        for i in range(0, len(self.files)):
             tok.append([])
             bloks = self.tokenizing(corpus[i], self.k)
 
