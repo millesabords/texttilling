@@ -1,0 +1,1 @@
+The structure of a text is shown thanks to the texttiling algorithm. Then blocks of texts that have a high similarity rate have a hyperlinks created.
